@@ -10,17 +10,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-               sshagent(credentials: ['7ff1da17-629d-45df-b042-368ed4160302']) {
-
-                if (!fileExists('.git')) {
-                // Se la directory non esiste, esegue il clone
-                echo "Repository non trovato, eseguo il clone..."
-                sh "git clone -b main git@github.com:francescolarocca/freestyle-persistence-service.git ."
-                }else{
-                    sh 'git fetch --all'
-                    sh 'git pull origin main'
-                }
-            }
+             checkout scm
         }
         }
 
