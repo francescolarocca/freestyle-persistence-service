@@ -14,7 +14,7 @@ pipeline {
                     script {
                         sh """
                         export GIT_SSH_COMMAND='ssh -i $GIT_SSH_KEY -o StrictHostKeyChecking=no'
-                        git clone -b main git@github.com:francescolarocca/freestyle-persistence-service.git .
+                        git pull git@github.com:francescolarocca/freestyle-persistence-service.git .
                         """
                     }
                 }
