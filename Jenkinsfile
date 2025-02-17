@@ -10,9 +10,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                sshagent(['ssh_key_github']) {
-                    echo "sto fetchando"
-                    sh 'git fetch --all'
+               sshagent(credentials: ['ssh_key_github']) {
+                    sh 'git pull origin main'
                 }
             }
         }
