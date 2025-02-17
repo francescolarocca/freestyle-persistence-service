@@ -1,10 +1,10 @@
 pipeline {
-    agent any  
+    agent any
 
     environment {
-        DOCKER_IMAGE = "reslacannemozze/freestyle-persistence-service:latest"
-        EC2_USER = "ec2-user"  
-        EC2_HOST = "ec2-34-247-173-32.eu-west-1.compute.amazonaws.com"
+        DOCKER_IMAGE = 'reslacannemozze/freestyle-persistence-service:latest'
+        EC2_USER = 'ec2-user'
+        EC2_HOST = 'ec2-34-247-173-32.eu-west-1.compute.amazonaws.com'
     }
 
     stages {
@@ -12,10 +12,15 @@ pipeline {
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: '7ff1da17-629d-45df-b042-368ed4160302', keyFileVariable: 'GIT_SSH_KEY')]) {
                     script {
-                        sh """
+                        if (fileExists('.git')) {
+                            sh 'git fetch --all'
+                            sh 'git pull'  // Sincronizza i file con il repo remoto
+                        } else {
+                            sh """
                         export GIT_SSH_COMMAND='ssh -i $GIT_SSH_KEY -o StrictHostKeyChecking=no'
-                        git pull git@github.com:francescolarocca/freestyle-persistence-service.git .
+                        git clone -b main git@github.com:francescolarocca/freestyle-persistence-service.git .
                         """
+                        }
                     }
                 }
             }
@@ -59,5 +64,4 @@ pipeline {
             echo '❌ Deploy fallito!'
         }
     }
- 
 }
