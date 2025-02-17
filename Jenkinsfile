@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'ssh_key_github', keyFileVariable: 'GIT_SSH_KEY')]) {
+                withCredentials([sshUserPrivateKey(credentialsId: '7ff1da17-629d-45df-b042-368ed4160302', keyFileVariable: 'GIT_SSH_KEY')]) {
                     script {
                         sh """
                         export GIT_SSH_COMMAND='ssh -i $GIT_SSH_KEY -o StrictHostKeyChecking=no'
@@ -23,7 +23,7 @@ pipeline {
 
         stage('Build & Push Docker Image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                withCredentials([usernamePassword(credentialsId: 'docker_hub_reslacannemozze', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     script {
                         sh "docker build -t ${DOCKER_IMAGE} ."
                         sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
