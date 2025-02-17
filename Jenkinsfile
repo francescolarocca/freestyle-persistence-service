@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-               sshagent(credentials: ['ssh_key_github']) {
+               sshagent(credentials: ['7ff1da17-629d-45df-b042-368ed4160302']) {
                     sh 'git pull origin main'
                 }
             }
