@@ -10,12 +10,10 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                if (fileExists('.git')) {
                 sshagent(['ssh_key_github']) {
                     echo "sto fetchando"
                     sh 'git fetch --all'
                 }
-            } 
             }
         }
 
