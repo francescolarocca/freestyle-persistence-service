@@ -9,12 +9,8 @@ pipeline {
 
     stages {
         stage('Checkout') {
-            steps {
-               sshagent(credentials: ['7ff1da17-629d-45df-b042-368ed4160302']) {
-                sh "ls -la"
-            }
-        }
-        }
+                    checkout scm
+                            }
 
         stage('Build & Push Docker Image') {
             steps {
