@@ -10,19 +10,12 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: '7ff1da17-629d-45df-b042-368ed4160302', keyFileVariable: 'GIT_SSH_KEY')]) {
-                    script {
-                        if (fileExists('.git')) {
-                            sh 'git fetch --all'
-                            sh 'git pull'  // Sincronizza i file con il repo remoto
-                        } else {
-                            sh """
-                        export GIT_SSH_COMMAND='ssh -i $GIT_SSH_KEY -o StrictHostKeyChecking=no'
-                        git clone -b main git@github.com:francescolarocca/freestyle-persistence-service.git .
-                        """
-                        }
-                    }
+                if (fileExists('.git')) {
+                sshagent(['ssh_key_github']) {
+                    echo "sto fetchando"
+                    sh 'git fetch --all'
                 }
+            } 
             }
         }
 
