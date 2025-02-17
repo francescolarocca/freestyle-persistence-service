@@ -8,6 +8,14 @@ pipeline {
     }
 
     stages {
+        stage('Debug Workspace') {
+    sh 'pwd'
+    sh 'ls -la'
+}
+ stage('Clean Workspace') {
+        deleteDir() // Elimina tutto il contenuto del workspace
+    }
+
         stage('Checkout') {
                     checkout scm
                             }
