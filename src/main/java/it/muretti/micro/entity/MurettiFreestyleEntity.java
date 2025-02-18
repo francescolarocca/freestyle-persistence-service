@@ -21,6 +21,9 @@ public class MurettiFreestyleEntity implements Serializable{
     private String ranking;
     private List<Rapper> rapper;
     
+    public MurettiFreestyleEntity() {
+    }
+    
     
 	public String getId() {
 		return id;
