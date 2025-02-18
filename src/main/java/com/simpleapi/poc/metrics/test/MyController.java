@@ -8,7 +8,7 @@ public class MyController {
 
     @GetMapping("/hello")
     public String hello() {
-        return "Ciao dal mio microservizio!";
+        return "Ciao dal mio microservizio superfigo!";
     }
 
     @PostMapping("/greet")
