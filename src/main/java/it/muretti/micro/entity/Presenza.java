@@ -7,12 +7,17 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.Date;
 
+
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Presenza implements Serializable {
 	
-	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "UTC")
     private Date data;
     private String evento;
     private int punteggio;
@@ -25,8 +30,8 @@ public class Presenza implements Serializable {
 	public Date getData() {
 		return data;
 	}
-	public void setData(Date data) {
-		this.data = data;
+	public void setData(Date dataPresenza) {
+		this.data = dataPresenza;
 	}
 	public String getEvento() {
 		return evento;
@@ -40,6 +45,11 @@ public class Presenza implements Serializable {
 	public void setPunteggio(int punteggio) {
 		this.punteggio = punteggio;
 	}
+	@Override
+	public String toString() {
+		return "Presenza [data=" + data + ", evento=" + evento + ", punteggio=" + punteggio + "]";
+	}
+	
     
     
 }

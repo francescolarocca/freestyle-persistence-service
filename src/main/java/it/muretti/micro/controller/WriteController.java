@@ -2,11 +2,14 @@ package it.muretti.micro.controller;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -53,30 +56,63 @@ public class WriteController {
         @RequestParam String tipo,
         @RequestParam String valore,
         @RequestParam String nome,
-        @RequestParam String data,  // La data è un parametro stringa nell'URL
+        @RequestParam String data,  
         @RequestBody Presenza nuovaPresenza) {
 
-        // Usa SimpleDateFormat per fare il parsing della stringa della data
-    	DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
-        
-        ZonedDateTime dataPresenza = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
         data = data.replace(" ", "+");
+        
+        Date dataConvertita=null;
         try {
-            // Parsing della data in un oggetto ZonedDateTime
-            dataPresenza = ZonedDateTime.parse(data, formatter);
+            ZonedDateTime dataPresenza = ZonedDateTime.parse(data, formatter);
+            dataConvertita = Date.from(dataPresenza.toInstant());
+            
         } catch (Exception e) {
-            e.printStackTrace(); // Gestione degli errori
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Formato data non valido: " + data);
         }
 
-        // Ora chiami il servizio con la data correttamente parsata
-        boolean updated = murettifreestyleService.updatePresenza(tipo, valore, nome, dataPresenza, nuovaPresenza);
+        // Passaggio dei dati aggiornati
+        boolean updated = murettifreestyleService.updatePresenza(tipo, valore,nome, dataConvertita, nuovaPresenza ,  nuovaPresenza.getEvento(), nuovaPresenza.getPunteggio());
         if (updated) {
+        	System.out.println(nuovaPresenza.toString());
             return ResponseEntity.ok("Presenza aggiornata correttamente");
+           
+            
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Presenza non trovata o errore nel processo");
         }
+        
+        
     }
+    @DeleteMapping("/{valore}/{nome}")
+    public ResponseEntity<?> deletePresenza(
+        
+        @PathVariable String valore,
+        @PathVariable String nome,
+        @RequestParam String data
+        ) {
+    	
+    	DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+        data = data.replace(" ", "+");
+        
+        Date dataConvertita=null;
+        try {
+            ZonedDateTime dataPresenza = ZonedDateTime.parse(data, formatter);
+            dataConvertita = Date.from(dataPresenza.toInstant());
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Formato data non valido: " + data);
+        }
 
+    	  boolean deleted = murettifreestyleService.deletePresenza(valore, nome, dataConvertita);
+          if (deleted) {
+              return ResponseEntity.ok("Data eliminata con successo!");
+          } else {
+              return ResponseEntity.notFound().build();
+          }    
+    }
 
 
 }
