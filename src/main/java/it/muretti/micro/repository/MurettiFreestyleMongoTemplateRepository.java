@@ -90,5 +90,25 @@ public class MurettiFreestyleMongoTemplateRepository {
 	}
 	
 	
+	public boolean addRapperToMuretto(String valore, String alias, String nome,  int rank) {
+        Bson filter = Filters.and(
+            Filters.eq("tipo", "Muretto"),
+            Filters.eq("valore", valore),
+            Filters.eq("alias", alias)// Trova il documento con questo valore
+        );
+
+        Document newRapper = new Document()
+            .append("nome", nome)
+            .append("rank", rank)
+            .append("presenze", List.of()); // Inizialmente senza presenze
+
+        Bson update = Updates.push("rapper", newRapper);
+
+        UpdateResult result = mongoTemplate.getCollection("murettifreestyle").updateOne(filter, update);
+
+        return result.getModifiedCount() == 1;
+    }
+	
+	
 	
 }

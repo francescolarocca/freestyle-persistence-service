@@ -12,6 +12,7 @@ public class Rapper implements Serializable {
     private String nome;
     private int rank;
     private List<Presenza> presenze;
+    
 	public String getNome() {
 		return nome;
 	}

@@ -113,4 +113,19 @@ public class MurettiFreestyleService {
 			         // La nuova data da impostare
 			    );
 		}
-}
+	 public boolean newRapperToMuretto( String valore,String alias, String nome,  int rank) {
+		   
+
+		    // Esegui l'aggiornamento nel repository
+		    
+
+		    return murettiRepository.addRapperToMuretto( 
+			        
+			        valore,
+			        nome,
+			        alias,
+			        rank
+			         // La nuova data da impostare
+			    );
+	 		}
+	 }

@@ -85,6 +85,7 @@ public class WriteController {
         
         
     }
+    
     @DeleteMapping("/{valore}/{nome}")
     public ResponseEntity<?> deletePresenza(
         
@@ -112,6 +113,22 @@ public class WriteController {
           } else {
               return ResponseEntity.notFound().build();
           }    
+    }
+    
+    @PostMapping("/addRapper")
+    public ResponseEntity<String> addRapper(
+            @RequestParam String valore,
+            @RequestParam String alias,
+            @RequestParam String nome,            
+            @RequestParam int rank) {
+
+        boolean success = murettifreestyleService.newRapperToMuretto(valore, nome, alias, rank);
+
+        if (success) {
+            return ResponseEntity.ok("Rapper aggiunto con successo!");
+        } else {
+            return ResponseEntity.badRequest().body("Errore: Nessun documento trovato o aggiornato.");
+        }
     }
 
 
