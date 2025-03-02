@@ -128,4 +128,18 @@ public class MurettiFreestyleService {
 			         // La nuova data da impostare
 			    );
 	 		}
+	 public boolean deleteRapper( String valore,String nome, String alias) {
+		   
+
+		    // Esegui l'aggiornamento nel repository
+		    
+
+		    return murettiRepository.deleteRapperInMuretto( 
+			        
+			        valore,
+			        nome,
+			        alias
+			         // La nuova data da impostare
+			    );
+		}
 	 }

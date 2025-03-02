@@ -109,6 +109,36 @@ public class MurettiFreestyleMongoTemplateRepository {
         return result.getModifiedCount() == 1;
     }
 	
+	public boolean deleteRapperInMuretto(
+		      
+		     String valore, 
+		     String nome,
+		     String alias
+		    
+		 ){
+		
+		Bson filter = Filters.and(
+		        Filters.eq("tipo", "Muretto"),
+		        Filters.eq("valore", valore),
+		        Filters.eq("alias", alias)
+		       
+		       
+		    );
+		
+		Bson update = Updates.pull("rapper",new Document("nome",nome));
+		
+		
+		
+		UpdateResult result = mongoTemplate.getCollection("murettifreestyle").updateOne(filter, update);
+		
+		
+						
+		
+		
+		
+		return result.getModifiedCount() == 1;
+	}
+	
 	
 	
 }

@@ -130,6 +130,22 @@ public class WriteController {
             return ResponseEntity.badRequest().body("Errore: Nessun documento trovato o aggiornato.");
         }
     }
+    @DeleteMapping("/deleteRapper/{valore}/{alias}")
+    public ResponseEntity<?> deleteRapper(
+        
+        @PathVariable String valore,
+        @PathVariable String alias,
+        @RequestParam String nome
+        
+        ) {
+    	
+    	  boolean deleted = murettifreestyleService.deleteRapper(valore, nome, alias);
+          if (deleted) {
+              return ResponseEntity.ok("Rapper eliminato con successo!");
+          } else {
+              return ResponseEntity.notFound().build();
+          }    
+    }
 
 
 }
