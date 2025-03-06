@@ -139,6 +139,44 @@ public class MurettiFreestyleMongoTemplateRepository {
 		return result.getModifiedCount() == 1;
 	}
 	
+	public boolean updateRapperInArray(
+		     String tipo, 
+		     String valore, 
+		     String nome,
+		     String newName,
+		     int newRank
+		     
+		 ){
+		
+		Bson filter = Filters.and(
+		        Filters.eq("tipo", tipo),
+		        Filters.eq("valore", valore)
+		       
+		    );
+		
+		Bson update = Updates.combine(
+				Updates.set("rapper.$[elem].nome",newName),
+				Updates.set("rapper.$[elem].rank",newRank));
+			
+		
+		UpdateOptions options = new UpdateOptions()
+		        .arrayFilters(List.of(
+		        Filters.and(
+		            Filters.eq("elem.nome", nome)
+		            
+		        ))
+		        		);
+		
+		UpdateResult result = mongoTemplate.getCollection("murettifreestyle").updateMany(filter, update, options);
+		
+		
+						
+		
+		
+		
+		return result.getModifiedCount() == 1;
+	}
+	
 	
 	
 }

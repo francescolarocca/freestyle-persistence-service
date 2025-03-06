@@ -24,9 +24,7 @@ public class Presenza implements Serializable {
     
     
     
-	public Presenza() {
-		this.data = new Date();
-	}
+	
 	public Date getData() {
 		return data;
 	}

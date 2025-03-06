@@ -142,4 +142,21 @@ public class MurettiFreestyleService {
 			         // La nuova data da impostare
 			    );
 		}
+	 
+	 public boolean updateRapper(String tipo, String valore,String nome, String newName, int newRank) {
+		    // Verifica che la data venga settata correttamente
+		    
+
+		    // Esegui l'aggiornamento nel repository
+		    
+
+		    return murettiRepository.updateRapperInArray(
+			        tipo,
+			        valore,
+			        nome,    
+			        newName,
+			        newRank
+			    );
+		}
+	 
 	 }

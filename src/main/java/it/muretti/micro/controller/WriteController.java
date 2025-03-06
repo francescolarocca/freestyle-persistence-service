@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import it.muretti.micro.entity.MurettiFreestyleEntity;
 import it.muretti.micro.entity.Presenza;
+import it.muretti.micro.entity.Rapper;
 import it.muretti.micro.service.MurettiFreestyleService;
 
+@CrossOrigin(origins = "http://localhost:3000") // Permette a tutto il controller di accettare richieste da React
 @Controller
 @RequestMapping("/murettifreestyle")
 public class WriteController {
@@ -42,6 +45,10 @@ public class WriteController {
         @PathVariable String valore,
         @PathVariable String rapperNome,
         @RequestBody Presenza presenza) {
+    	
+    	System.out.println("Data ricevuto: " + presenza.getData());
+    	System.out.println("Evento ricevuto: " + presenza.getEvento());
+        System.out.println("Punteggio ricevuto: " + presenza.getPunteggio());
         
         boolean added = murettifreestyleService.addPresenzaToRapper(tipo, valore, rapperNome, presenza);
         if (added) {
@@ -145,6 +152,31 @@ public class WriteController {
           } else {
               return ResponseEntity.notFound().build();
           }    
+    }
+    
+    @PutMapping("/updateRapper/{tipo}/{valore}/{oldName}")
+    public ResponseEntity<?> updateRap(
+    	@PathVariable String tipo,
+    	@PathVariable String valore,
+        @PathVariable String oldName,
+        @RequestParam String nome,
+        @RequestParam int rank
+          
+        ) {
+
+       
+        // Passaggio dei dati aggiornati
+        boolean updated = murettifreestyleService.updateRapper(tipo, valore, oldName,  nome , rank);
+        if (updated) {
+        	
+            return ResponseEntity.ok("Rapper aggiornato correttamente");
+           
+            
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Presenza non trovata o errore nel processo");
+        }
+        
+        
     }
 
 
