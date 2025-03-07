@@ -18,15 +18,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import it.muretti.micro.conf.RankPointTable;
 import it.muretti.micro.entity.MurettiFreestyleEntity;
 import it.muretti.micro.entity.Presenza;
 import it.muretti.micro.entity.Rapper;
+import it.muretti.micro.request.RequestPresenza;
 import it.muretti.micro.service.MurettiFreestyleService;
 
 @CrossOrigin(origins = "http://localhost:3000") // Permette a tutto il controller di accettare richieste da React
 @Controller
 @RequestMapping("/murettifreestyle")
 public class WriteController {
+	
 	
 	
 	@Autowired
@@ -44,11 +47,10 @@ public class WriteController {
         @PathVariable String tipo,
         @PathVariable String valore,
         @PathVariable String rapperNome,
-        @RequestBody Presenza presenza) {
+        @RequestBody RequestPresenza presenza) {
     	
-    	System.out.println("Data ricevuto: " + presenza.getData());
-    	System.out.println("Evento ricevuto: " + presenza.getEvento());
-        System.out.println("Punteggio ricevuto: " + presenza.getPunteggio());
+    	System.out.println("Dati ricevuti: " + presenza.toString());
+    
         
         boolean added = murettifreestyleService.addPresenzaToRapper(tipo, valore, rapperNome, presenza);
         if (added) {
@@ -60,10 +62,10 @@ public class WriteController {
     
     @PutMapping("/updatePresenza")
     public ResponseEntity<?> updatePresenza(
-        @RequestParam String tipo,
-        @RequestParam String valore,
-        @RequestParam String nome,
-        @RequestParam String data,  
+        @RequestParam String tipo, // muretto
+        @RequestParam String valore, //messina
+        @RequestParam String nome,  //resla
+        @RequestParam String data,  // data
         @RequestBody Presenza nuovaPresenza) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;

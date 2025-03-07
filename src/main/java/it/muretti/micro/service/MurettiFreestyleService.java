@@ -12,14 +12,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import it.muretti.micro.conf.RankPointTable;
 import it.muretti.micro.entity.MurettiFreestyleEntity;
 import it.muretti.micro.entity.Presenza;
 import it.muretti.micro.entity.Rapper;
 import it.muretti.micro.repository.MurettiFreestyleMongoTemplateRepository;
 import it.muretti.micro.repository.MurettiFreestyleRepository;
+import it.muretti.micro.request.RequestPresenza;
 
 @Service
 public class MurettiFreestyleService {
+	
+	@Autowired
+	private RankPointTable rankPointTable;
 	
 	@Autowired
 	private   MurettiFreestyleRepository murettifreestyleRepository;
@@ -53,7 +58,10 @@ public class MurettiFreestyleService {
 	        return List.of();  // Restituisce una lista vuota se non trova l'entità
 	    }
 	 
-	 public boolean addPresenzaToRapper(String tipo, String valore, String rapperNome, Presenza presenza) {
+	 public boolean addPresenzaToRapper(String tipo, String valore, String rapperNome, RequestPresenza requestPresenza) {
+		 
+		 
+		 
 	        if (!"Muretto".equalsIgnoreCase(tipo)) {
 	            throw new IllegalArgumentException("Tipo non valido. Deve essere 'Muretto'");
 	        }
@@ -68,8 +76,13 @@ public class MurettiFreestyleService {
 
 	            if (rapperOpt.isPresent()) {
 	                Rapper rapper = rapperOpt.get();
+	                
+	                Presenza newPresenza = new Presenza();
+	                newPresenza.setData(requestPresenza.getData());
+	                newPresenza.setEvento(requestPresenza.getEvento());
+	                newPresenza.setPunteggio(rankPointTable.calcolaRank(requestPresenza.getEvento(),requestPresenza.getMoltiplicatore(),requestPresenza.getPosizionamento()));
 	                // Aggiungi la nuova presenza all'array di presenze
-	                rapper.getPresenze().add(presenza);
+	                rapper.getPresenze().add(newPresenza);
 	                murettifreestyleRepository.save(muretto); // Salva l'entità aggiornata nel DB
 	                return true;  // Ritorna true se l'operazione è riuscita
 	            }
@@ -80,7 +93,7 @@ public class MurettiFreestyleService {
 	 
 	 
 	 
-	 public boolean updatePresenza(String tipo, String valore,String nome, Date data,Presenza nuovaPresenza, String evento, int punteggio) {
+	 public boolean updatePresenza(String tipo, String valore,String nome, Date data,Presenza nuovaPresenza, String evento, double punteggio) {
 		    // Verifica che la data venga settata correttamente
 		    System.out.println("🔍 Nuova data da aggiornare: " + nuovaPresenza.getData());
 

@@ -27,7 +27,7 @@ public class MurettiFreestyleMongoTemplateRepository {
 		     String nome,
 		     Date data, 
 		     String evento, 
-		     int punteggio, 
+		     double punteggio, 
 		     Date nuovaData
 		 ){
 		

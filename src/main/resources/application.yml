@@ -1,0 +1,35 @@
+spring:
+  jackson:
+    date-format: yyyy-MM-dd'T'HH:mm:ss.SSSXXX
+    default-property-inclusion: non_null
+  mvc:
+    contentnegotiation:
+      favor-parameter: 'true'
+    media-types:
+      json: application/json;charset=UTF-8
+  application:
+    name: micro
+  data:
+    mongodb:
+      uri: mongodb://admin:pippo@localhost:27017/MurettiFreestyle?authSource=admin
+debug: 'True'
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: DEBUG
+
+rankpointable:
+  punteggiopresenza: 2
+  battle:
+    ottavi: 2
+    quarti: 4
+    semifinale: 8
+    finale : 12
+  moltiplicatore:
+    casa: 1.0
+    regionale: 1.5
+

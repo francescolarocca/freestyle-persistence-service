@@ -1,4 +1,4 @@
-package it.muretti.micro.entity;
+package it.muretti.micro.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -11,7 +11,7 @@ import java.util.Date;
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Presenza implements Serializable {
+public class RequestPresenza implements Serializable {
 	
 	/**
 	 * 
@@ -20,11 +20,28 @@ public class Presenza implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "UTC")
     private Date data;
     private String evento;
-    private double punteggio;
+    private String moltiplicatore;
+    private String posizionamento;
     
     
     
-	
+    public String getPosizionamento() {
+    	return posizionamento;
+    }
+    
+    public void setPosizionamento(String posizionamento) {
+    	this.posizionamento = posizionamento;
+    	}
+    
+    
+    public String getMoltiplicatore() {
+    	return moltiplicatore;
+    }
+    
+    public void setMoltiplicatore(String moltiplicatore) {
+    	this.moltiplicatore = moltiplicatore;
+    }
+    
 	public Date getData() {
 		return data;
 	}
@@ -37,17 +54,21 @@ public class Presenza implements Serializable {
 	public void setEvento(String evento) {
 		this.evento = evento;
 	}
-	public double getPunteggio() {
-		return punteggio;
-	}
-	public void setPunteggio(double punteggio) {
-		this.punteggio = punteggio;
-	}
+
 	@Override
 	public String toString() {
-		return "Presenza [data=" + data + ", evento=" + evento + ", punteggio=" + punteggio + "]";
+		return "RequestPresenza [data=" + data + ", evento=" + evento + ", moltiplicatore=" + moltiplicatore
+				+ ", posizionamento=" + posizionamento + "]";
 	}
 	
+	
+	
+    
+    
+    
+    
+    
+
     
     
 }
