@@ -2,7 +2,6 @@ package it.muretti.micro.controller;
 
 import java.util.List;
 
-import it.muretti.micro.conf.RankPointTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +20,7 @@ import it.muretti.micro.service.MurettiFreestyleService;
 @Controller
 @RequestMapping("/murettifreestyle")
 public class ReadController {
-
-	@Autowired
-	private RankPointTable rankPointTable;
+	
 	@Autowired
 	private MurettiFreestyleService murettifreestyleService;
 	@GetMapping
@@ -34,10 +31,8 @@ public class ReadController {
 	
 	@GetMapping("/filtrati")
 	public ResponseEntity<List<MurettiFreestyleEntity>> getMurettiFiltrati(@RequestParam String tipo) {
-
-		System.out.println("");
-
-		if (!tipo.equalsIgnoreCase("muretto") && !tipo.equalsIgnoreCase("rapper")) {
+	    
+	    if (!tipo.equalsIgnoreCase("muretto") && !tipo.equalsIgnoreCase("rapper")) {
 	       
 	        return ResponseEntity
 	                .status(HttpStatus.BAD_REQUEST)
