@@ -60,10 +60,10 @@ public class WriteController {
     
     @PutMapping("/updatePresenza")
     public ResponseEntity<?> updatePresenza(
-        @RequestParam String tipo,
-        @RequestParam String valore,
-        @RequestParam String nome,
-        @RequestParam String data,  
+        @RequestParam String tipo, // muretto
+        @RequestParam String valore, //messina
+        @RequestParam String nome,  //resla
+        @RequestParam String data,  // data
         @RequestBody Presenza nuovaPresenza) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
