@@ -59,36 +59,53 @@ public class MurettiFreestyleService {
 	    }
 	 
 	 public boolean addPresenzaToRapper(String tipo, String valore, String rapperNome, RequestPresenza requestPresenza) {
-		 
-		 
-		 
-	        if (!"Muretto".equalsIgnoreCase(tipo)) {
-	            throw new IllegalArgumentException("Tipo non valido. Deve essere 'Muretto'");
-	        }
-	        
-	        Optional<MurettiFreestyleEntity> entity = murettifreestyleRepository.findByTipoAndValore(tipo, valore);
-	        if (entity.isPresent()) {
-	            MurettiFreestyleEntity muretto = entity.get();
-	            // Trova il rapper con il nome specificato
-	            Optional<Rapper> rapperOpt = muretto.getRapper().stream()
-	                .filter(r -> r.getNome().equalsIgnoreCase(rapperNome))
-	                .findFirst();
+		    if (!"Muretto".equalsIgnoreCase(tipo)) {
+		        throw new IllegalArgumentException("Tipo non valido. Deve essere 'Muretto'");
+		    }
 
-	            if (rapperOpt.isPresent()) {
-	                Rapper rapper = rapperOpt.get();
-	                
-	                Presenza newPresenza = new Presenza();
-	                newPresenza.setData(requestPresenza.getData());
-	                newPresenza.setEvento(requestPresenza.getEvento());
-	                newPresenza.setPunteggio(rankPointTable.calcolaRank(requestPresenza.getEvento(),requestPresenza.getMoltiplicatore(),requestPresenza.getPosizionamento()));
-	                // Aggiungi la nuova presenza all'array di presenze
-	                rapper.getPresenze().add(newPresenza);
-	                murettifreestyleRepository.save(muretto); // Salva l'entità aggiornata nel DB
-	                return true;  // Ritorna true se l'operazione è riuscita
-	            }
-	        }
-	        return false;  // Ritorna false se non trova l'entità o il rapper
-	    }
+		    Optional<MurettiFreestyleEntity> entityOpt = murettifreestyleRepository.findByTipoAndValore(tipo, valore);
+
+		    if (entityOpt.isPresent()) {
+		        MurettiFreestyleEntity muretto = entityOpt.get();
+
+		        // Trova il rapper specificato
+		        Optional<Rapper> rapperOpt = muretto.getRapper().stream()
+		            .filter(r -> r.getNome().equalsIgnoreCase(rapperNome))
+		            .findFirst();
+
+		        if (rapperOpt.isPresent()) {
+		            Rapper rapper = rapperOpt.get();
+
+		            // Creazione nuova presenza
+		            Presenza newPresenza = new Presenza();
+		            newPresenza.setData(requestPresenza.getData());
+		            newPresenza.setEvento(requestPresenza.getEvento());
+
+		            // Calcola il punteggio per questa presenza
+		            double punteggio = rankPointTable.calcolaRank(
+		                requestPresenza.getEvento(),
+		                requestPresenza.getMoltiplicatore(),
+		                requestPresenza.getPosizionamento()
+		            );
+
+		            newPresenza.setPunteggio(punteggio);
+
+		            // Aggiungi la nuova presenza alla lista del rapper
+		            rapper.getPresenze().add(newPresenza);
+
+		            // 🔥 Aggiorna il rank del rapper sommando il punteggio
+		            rapper.setRank(rapper.getRank() + punteggio);
+
+		            // Salva l'entità aggiornata nel DB
+		            murettifreestyleRepository.save(muretto);
+
+		            return true;
+		        }
+		    }
+
+		    return false; // Se il rapper o il muretto non vengono trovati
+		}
+
 	 
 	 
 	 

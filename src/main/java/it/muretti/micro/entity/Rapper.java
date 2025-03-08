@@ -10,7 +10,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Rapper implements Serializable {
     private String nome;
-    private int rank;
+    private double rank;
     private List<Presenza> presenze;
     
 	public String getNome() {
@@ -19,10 +19,10 @@ public class Rapper implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public int getRank() {
+	public double getRank() {
 		return rank;
 	}
-	public void setRank(int rank) {
+	public void setRank(double rank) {
 		this.rank = rank;
 	}
 	public List<Presenza> getPresenze() {
