@@ -12,7 +12,7 @@ spring:
   data:
     mongodb:
       uri: mongodb://admin:pippo@localhost:27017/MurettiFreestyle?authSource=admin
-debug: 'True'
+debug: 'false'
 logging:
   level:
     org:
@@ -20,10 +20,10 @@ logging:
         data:
           mongodb:
             core:
-              MongoTemplate: DEBUG
+              MongoTemplate: ERROR
 
 rankpointable:
-  punteggiopresenza: 2
+  presenza: 2
   battle:
     ottavi: 2
     quarti: 4

@@ -14,7 +14,7 @@ import java.util.Map;
 @Setter
 public class RankPointTable {
 
-    private int punteggiopresenza;
+    private int presenza;
     private Map<String,Integer> battle;
     private Map<String,Double> moltiplicatore;
 
@@ -23,8 +23,8 @@ public class RankPointTable {
         if(evento.equals("battle")) {
             return this.battle.get(posizionamento) * this.moltiplicatore.get(moltiplicatore);
         }
-        else if(evento.equals("punteggiopresenza")) {
-            return punteggiopresenza * this.moltiplicatore.get(moltiplicatore);
+        else if(evento.equals("presenza")) {
+            return presenza * this.moltiplicatore.get(moltiplicatore);
         }
         return 0 ;
     }
