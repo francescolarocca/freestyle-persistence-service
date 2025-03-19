@@ -11,7 +11,7 @@ spring:
     name: micro
   data:
     mongodb:
-      uri: mongodb://admin:pippo@localhost:27017/MurettiFreestyle?authSource=admin
+      uri: mongodb://admin:pippo@mongodb:27017/MurettiFreestyle?authSource=admin
 debug: 'false'
 logging:
   level:
