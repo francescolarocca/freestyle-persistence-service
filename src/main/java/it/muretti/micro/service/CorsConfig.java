@@ -14,8 +14,8 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
             	registry.addMapping("/**") // Imposta le rotte da cui accettare richieste
-                .allowedOrigins("http://localhost:3000") // Permetti solo il dominio React in fase di sviluppo
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // I metodi HTTP consentiti
+                .allowedOrigins("*") // Permetti solo il dominio React in fase di sviluppo
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS","PATCH","HEAD") // I metodi HTTP consentiti
                 .allowedHeaders("Content-Type", "Authorization", "X-Requested-With", "accept", "Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers") // Gli headers che il frontend può inviare
                 .allowCredentials(true); // Consenti i cookie (se necessario)
             }

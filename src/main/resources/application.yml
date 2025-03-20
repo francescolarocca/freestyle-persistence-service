@@ -1,4 +1,10 @@
 spring:
+  web:
+   cors:
+     allowed-origins: "*"
+     allowed-methods: "*"
+     allowed-headers: "*"
+     allow-credentials: false
   jackson:
     date-format: yyyy-MM-dd'T'HH:mm:ss.SSSXXX
     default-property-inclusion: non_null
