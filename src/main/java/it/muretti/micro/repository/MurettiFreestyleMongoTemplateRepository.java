@@ -90,7 +90,7 @@ public class MurettiFreestyleMongoTemplateRepository {
 	}
 	
 	
-	public boolean addRapperToMuretto(String valore, String alias, String nome,  int rank) {
+	public boolean addRapperToMuretto(String valore, String nome, String alias, int rank, String bio, String avatarUrl, String spotifyLink, String soundcloudLink, String instagramLink) {
         Bson filter = Filters.and(
             Filters.eq("tipo", "Muretto"),
             Filters.eq("valore", valore),
@@ -100,7 +100,12 @@ public class MurettiFreestyleMongoTemplateRepository {
         Document newRapper = new Document()
             .append("nome", nome)
             .append("rank", rank)
-            .append("presenze", List.of()); // Inizialmente senza presenze
+            .append("presenze", List.of()) // Inizialmente senza presenze
+            .append("bio", bio)
+            .append("avatarUrl", avatarUrl)
+            .append("spotifyLink", spotifyLink)
+            .append("soundcloudLink", soundcloudLink)
+            .append("instagramLink", instagramLink); 
 
         Bson update = Updates.push("rapper", newRapper);
 

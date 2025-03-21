@@ -18,6 +18,8 @@ spring:
   data:
     mongodb:
       uri: mongodb://admin:pippo@mongodb:27017/MurettiFreestyle?authSource=admin
+  resources:
+   static-locations: classpath:/static/, file:/uploads/
 debug: 'false'
 logging:
   level:
@@ -37,5 +39,8 @@ rankpointable:
     finale : 12
   moltiplicatore:
     casa: 1.0
-    regionale: 1.5
+    regionale: 1.5		
+
+
+
 
