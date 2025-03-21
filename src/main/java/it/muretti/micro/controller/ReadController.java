@@ -60,5 +60,21 @@ public class ReadController {
             return ResponseEntity.status(400).body(e.getMessage());
         }
     }
+	@GetMapping("/rapperByName")
+	public ResponseEntity<?> getRapper(@RequestParam String tipo, @RequestParam String valore, @RequestParam String nome) {
+	    try {
+	        // Cerca il rapper in base al tipo, valore e nome
+	        Rapper rapper = murettifreestyleService.findRapper(tipo, valore, nome);
+	        
+	        if (rapper == null) {
+	            return ResponseEntity.status(404).body("Rapper non trovato per il muretto con valore: " + valore + " e nome: " + nome);
+	        }
+	        
+	        return ResponseEntity.ok(rapper);
+	        
+	    } catch (IllegalArgumentException e) {
+	        return ResponseEntity.status(400).body(e.getMessage());
+	    }
+	}
 		
 }

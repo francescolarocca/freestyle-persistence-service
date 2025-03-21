@@ -129,9 +129,14 @@ public class WriteController {
             @RequestParam String valore,
             @RequestParam String alias,
             @RequestParam String nome,            
-            @RequestParam int rank) {
+            @RequestParam int rank,
+            @RequestParam String bio,
+            @RequestParam String avatarUrl,
+            @RequestParam String spotifyLink,
+            @RequestParam String soundcloudLink,
+            @RequestParam String instagramLink ) {
 
-        boolean success = murettifreestyleService.newRapperToMuretto(valore, nome, alias, rank);
+        boolean success = murettifreestyleService.newRapperToMuretto(valore, nome, alias, rank,bio,avatarUrl,spotifyLink,soundcloudLink,instagramLink);
 
         if (success) {
             return ResponseEntity.ok("Rapper aggiunto con successo!");

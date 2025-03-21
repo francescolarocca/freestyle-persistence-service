@@ -57,6 +57,19 @@ public class MurettiFreestyleService {
 	        }
 	        return List.of();  // Restituisce una lista vuota se non trova l'entità
 	    }
+	// Metodo che restituisce un rapper specifico in base a tipo, valore e nome
+	    public Rapper findRapper(String tipo, String valore, String nome) {
+	        // Trova il TipoRecord per tipo e valore
+	    	MurettiFreestyleEntity rappers  = murettifreestyleRepository.findByTipoAndValore(tipo, valore)
+	                .orElseThrow(() -> new IllegalArgumentException("Muretto con tipo " + tipo + " e valore " + valore + " non trovato"));
+	        
+	        // Cerca il rapper con il nome specificato all'interno del TipoRecord
+	        return rappers.getRapper().stream()
+	                         .filter(rapper -> rapper.getNome().equalsIgnoreCase(nome))
+	                         .findFirst()
+	                         .orElse(null); // Restituisce null se il rapper non è trovato
+	    }
+	
 	 
 	 public boolean addPresenzaToRapper(String tipo, String valore, String rapperNome, RequestPresenza requestPresenza) {
 		    if (!"Muretto".equalsIgnoreCase(tipo)) {
@@ -143,7 +156,7 @@ public class MurettiFreestyleService {
 			         // La nuova data da impostare
 			    );
 		}
-	 public boolean newRapperToMuretto( String valore,String alias, String nome,  int rank) {
+	 public boolean newRapperToMuretto( String valore, String nome, String alias, int rank, String bio, String avatarUrl, String spotifyLink, String soundcloudLink, String instagramLink) {
 		   
 
 		    // Esegui l'aggiornamento nel repository
@@ -154,7 +167,12 @@ public class MurettiFreestyleService {
 			        valore,
 			        nome,
 			        alias,
-			        rank
+			        rank,
+			        bio,
+			        avatarUrl,
+			        spotifyLink,
+			        soundcloudLink,
+			        instagramLink
 			         // La nuova data da impostare
 			    );
 	 		}
@@ -188,5 +206,17 @@ public class MurettiFreestyleService {
 			        newRank
 			    );
 		}
+	 
+	 public MurettiFreestyleEntity findMuretto(String tipo, String valore , String alias) {
+	        if (!"Muretto".equalsIgnoreCase(tipo)) {
+	            throw new IllegalArgumentException("Tipo non valido. Deve essere 'Muretto'");
+	        }
+	        
+	        Optional<MurettiFreestyleEntity> entity = murettifreestyleRepository.findByTipoAndValoreAndAlias(tipo, valore , alias);
+	        if (entity.isPresent()) {
+	            return entity.get();
+	        }
+	        throw new IllegalArgumentException("Muretto con tipo: " + tipo + ", valore: " + valore + " e alias: " + alias + " non trovato");
+	    }
 	 
 	 }
