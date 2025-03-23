@@ -2,6 +2,7 @@ package it.muretti.micro.repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -13,6 +14,8 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.UpdateResult;
+
+import it.muretti.micro.entity.Rapper;
 
 @Component
 public class MurettiFreestyleMongoTemplateRepository {
@@ -90,58 +93,48 @@ public class MurettiFreestyleMongoTemplateRepository {
 	}
 	
 	
-	public boolean addRapperToMuretto(String valore, String nome, String alias, int rank, String bio, String avatarUrl, String spotifyLink, String soundcloudLink, String instagramLink) {
-        Bson filter = Filters.and(
-            Filters.eq("tipo", "Muretto"),
-            Filters.eq("valore", valore),
-            Filters.eq("alias", alias)// Trova il documento con questo valore
-        );
+	public boolean addRapperToMuretto(String valore, String alias, Rapper rapper) {
+	    Bson filter = Filters.and(
+	        Filters.eq("tipo", "Muretto"),
+	        Filters.eq("valore", valore),
+	        Filters.eq("alias", alias)
+	    );
+	    
+	    String nameClean = rapper.getNome().trim();
+	    // Conversione da Rapper entity a Document
+	    Document newRapper = new Document()
+	        .append("nome", nameClean)
+	        .append("rank", rapper.getRank())
+	        .append("presenze", List.of()) // O rapper.getPresenze() se hai già delle presenze
+	        .append("bio", rapper.getBio())
+	        .append("avatarUrl", rapper.getAvatarUrl())
+	        .append("spotifyLink", rapper.getSpotifyLink())
+	        .append("soundcloudLink", rapper.getSoundcloudLink())
+	        .append("instagramLink", rapper.getInstagramLink());
 
-        Document newRapper = new Document()
-            .append("nome", nome)
-            .append("rank", rank)
-            .append("presenze", List.of()) // Inizialmente senza presenze
-            .append("bio", bio)
-            .append("avatarUrl", avatarUrl)
-            .append("spotifyLink", spotifyLink)
-            .append("soundcloudLink", soundcloudLink)
-            .append("instagramLink", instagramLink); 
+	    Bson update = Updates.push("rapper", newRapper);
 
-        Bson update = Updates.push("rapper", newRapper);
+	    UpdateResult result = mongoTemplate.getCollection("murettifreestyle").updateOne(filter, update);
 
-        UpdateResult result = mongoTemplate.getCollection("murettifreestyle").updateOne(filter, update);
+	    return result.getModifiedCount() == 1;
+	}
 
-        return result.getModifiedCount() == 1;
-    }
 	
-	public boolean deleteRapperInMuretto(
-		      
-		     String valore, 
-		     String nome,
-		     String alias
-		    
-		 ){
-		
-		Bson filter = Filters.and(
-		        Filters.eq("tipo", "Muretto"),
-		        Filters.eq("valore", valore),
-		        Filters.eq("alias", alias)
-		       
-		       
-		    );
-		
-		Bson update = Updates.pull("rapper",new Document("nome",nome));
-		
-		
-		
-		UpdateResult result = mongoTemplate.getCollection("murettifreestyle").updateOne(filter, update);
-		
-		
-						
-		
-		
-		
-		return result.getModifiedCount() == 1;
+	public boolean deleteRapperInMuretto(String valore, String nome, String alias) {
+
+	    Bson filter = Filters.and(
+	        Filters.eq("tipo", "Muretto"),
+	        Filters.eq("valore", valore),
+	        Filters.eq("alias", alias)
+	    );
+
+	    // Normalizza il nome prima della query
+	    nome = nome.trim();
+
+	    Bson update = Updates.pull("rapper", Filters.regex("nome", "^" + Pattern.quote(nome) + "$", "i"));
+	    UpdateResult result = mongoTemplate.getCollection("murettifreestyle").updateOne(filter, update);
+
+	    return result.getModifiedCount() == 1;
 	}
 	
 	public boolean updateRapperInArray(
@@ -159,8 +152,10 @@ public class MurettiFreestyleMongoTemplateRepository {
 		       
 		    );
 		
+		String nameClean = newName.trim();
+		
 		Bson update = Updates.combine(
-				Updates.set("rapper.$[elem].nome",newName),
+				Updates.set("rapper.$[elem].nome",nameClean),
 				Updates.set("rapper.$[elem].rank",newRank));
 			
 		

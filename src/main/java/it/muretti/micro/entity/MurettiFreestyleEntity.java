@@ -1,6 +1,7 @@
 package it.muretti.micro.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -19,7 +20,7 @@ public class MurettiFreestyleEntity implements Serializable{
     private String muretto;
     private String alias;
     private String ranking;
-    private List<Rapper> rapper;
+    private List<Rapper> rapper = new ArrayList<>();
     
     public MurettiFreestyleEntity() {
     }
