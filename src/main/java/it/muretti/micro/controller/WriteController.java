@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import dto.AddRapperRequest;
 import it.muretti.micro.conf.RankPointTable;
 import it.muretti.micro.entity.MurettiFreestyleEntity;
 import it.muretti.micro.entity.Presenza;
@@ -37,8 +38,15 @@ public class WriteController {
 	
 	@PostMapping("/add")
     public ResponseEntity<MurettiFreestyleEntity> addUtente(@RequestBody MurettiFreestyleEntity entity) {
-		MurettiFreestyleEntity nuovoUtente = murettifreestyleService.addEntity(entity);
-        return ResponseEntity.ok(nuovoUtente);
+		try {
+	        MurettiFreestyleEntity nuovoMuretto = murettifreestyleService.addEntity(entity);
+	        // Restituisci la risposta con codice 201 per successo
+	        return ResponseEntity.status(HttpStatus.CREATED).body(nuovoMuretto);
+	    } catch (Exception e) {
+	        // Gestisci errori se ci sono
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+	    }
     }
 	
 	 // Endpoint per aggiungere la presenza a un rapper specifico
@@ -125,18 +133,12 @@ public class WriteController {
     }
     
     @PostMapping("/addRapper")
-    public ResponseEntity<String> addRapper(
-            @RequestParam String valore,
-            @RequestParam String alias,
-            @RequestParam String nome,            
-            @RequestParam int rank,
-            @RequestParam String bio,
-            @RequestParam String avatarUrl,
-            @RequestParam String spotifyLink,
-            @RequestParam String soundcloudLink,
-            @RequestParam String instagramLink ) {
-
-        boolean success = murettifreestyleService.newRapperToMuretto(valore, nome, alias, rank,bio,avatarUrl,spotifyLink,soundcloudLink,instagramLink);
+    public ResponseEntity<String> addRapper(@RequestBody AddRapperRequest request) {
+        boolean success = murettifreestyleService.newRapperToMuretto(
+                request.getValore(),
+                request.getAlias(),
+                request.getRapper()
+        );
 
         if (success) {
             return ResponseEntity.ok("Rapper aggiunto con successo!");

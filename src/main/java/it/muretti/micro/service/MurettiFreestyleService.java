@@ -1,5 +1,6 @@
 package it.muretti.micro.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -43,6 +44,9 @@ public class MurettiFreestyleService {
     }
 	
 	public MurettiFreestyleEntity addEntity(MurettiFreestyleEntity entity){
+		if (entity.getRapper() == null) {
+	        entity.setRapper(new ArrayList<>()); // Inizializza la lista vuota
+	    }
 		return murettifreestyleRepository.save(entity);
 	}
 
@@ -156,26 +160,11 @@ public class MurettiFreestyleService {
 			         // La nuova data da impostare
 			    );
 		}
-	 public boolean newRapperToMuretto( String valore, String nome, String alias, int rank, String bio, String avatarUrl, String spotifyLink, String soundcloudLink, String instagramLink) {
-		   
-
-		    // Esegui l'aggiornamento nel repository
-		    
-
-		    return murettiRepository.addRapperToMuretto( 
-			        
-			        valore,
-			        nome,
-			        alias,
-			        rank,
-			        bio,
-			        avatarUrl,
-			        spotifyLink,
-			        soundcloudLink,
-			        instagramLink
-			         // La nuova data da impostare
-			    );
-	 		}
+	 
+	 public boolean newRapperToMuretto(String valore, String alias, Rapper rapper) {
+		    return murettiRepository.addRapperToMuretto(valore, alias, rapper);
+		}
+	
 	 public boolean deleteRapper( String valore,String nome, String alias) {
 		   
 
