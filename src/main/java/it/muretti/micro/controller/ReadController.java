@@ -18,13 +18,14 @@ import it.muretti.micro.service.MurettiFreestyleService;
 
 @CrossOrigin(origins = "http://localhost:3000") // Permette a tutto il controller di accettare richieste da React
 
-@Controller
+@RestController
 @RequestMapping("/murettifreestyle")
 public class ReadController {
 
 	
 	@Autowired
 	private MurettiFreestyleService murettifreestyleService;
+
 	@GetMapping
 	public ResponseEntity<List<MurettiFreestyleEntity>> getAllUsers() {
         return ResponseEntity.ok(murettifreestyleService.getAllUsers());

@@ -3,31 +3,24 @@ package it.muretti.micro.controller;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 import dto.AddRapperRequest;
-import it.muretti.micro.conf.RankPointTable;
+
 import it.muretti.micro.entity.MurettiFreestyleEntity;
 import it.muretti.micro.entity.Presenza;
-import it.muretti.micro.entity.Rapper;
+
 import it.muretti.micro.request.RequestPresenza;
 import it.muretti.micro.service.MurettiFreestyleService;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:3000") // Permette a tutto il controller di accettare richieste da React
-@Controller
+@RestController
 @RequestMapping("/murettifreestyle")
 public class WriteController {
 	
@@ -49,25 +42,30 @@ public class WriteController {
 	    }
     }
 	
-	 // Endpoint per aggiungere la presenza a un rapper specifico
-    @PostMapping("/addPresenza/{tipo}/{valore}/{rapperNome}")
-    public ResponseEntity<?> addPresenza(
-        @PathVariable String tipo,
-        @PathVariable String valore,
-        @PathVariable String rapperNome,
-        @RequestBody RequestPresenza presenza) {
-    	
-    	System.out.println("Dati ricevuti: " + presenza.toString());
-    
-        
-        boolean added = murettifreestyleService.addPresenzaToRapper(tipo, valore, rapperNome, presenza);
-        if (added) {
-            return ResponseEntity.ok("Presenza aggiunta correttamente");
-        } else {
-            return ResponseEntity.status(404).body("Rapper non trovato o errore nel processo");
-        }
-    }
-    
+	 // aEndpoint per aggiungere la presenza a un rapper specifico
+     @PostMapping("/addPresenza/{tipo}/{valore}/{rapperNome}")
+     public ResponseEntity<?> addPresenza(
+             @PathVariable String tipo,
+             @PathVariable String valore,
+             @PathVariable String rapperNome,
+             @RequestBody RequestPresenza presenza) {
+
+
+
+         try {
+             boolean added = murettifreestyleService.addPresenzaToRapper(tipo, valore, rapperNome, presenza);
+             if (added) {
+                 System.out.println("Dati ricevuti: " + presenza.toString());
+                 return ResponseEntity.ok("Presenza aggiunta correttamente");
+             } else {
+                 return ResponseEntity.status(404).body("Rapper non trovato o errore nel processo");
+             }
+         } catch (IllegalArgumentException e) {
+             return ResponseEntity.badRequest().body("Errore: " + e.getMessage());
+         }
+     }
+
+
     @PutMapping("/updatePresenza")
     public ResponseEntity<?> updatePresenza(
         @RequestParam String tipo, // muretto
@@ -78,12 +76,12 @@ public class WriteController {
 
         DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
         data = data.replace(" ", "+");
-        
+
         Date dataConvertita=null;
         try {
             ZonedDateTime dataPresenza = ZonedDateTime.parse(data, formatter);
             dataConvertita = Date.from(dataPresenza.toInstant());
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Formato data non valido: " + data);
@@ -94,15 +92,15 @@ public class WriteController {
         if (updated) {
         	System.out.println(nuovaPresenza.toString());
             return ResponseEntity.ok("Presenza aggiornata correttamente");
-           
-            
+
+
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Presenza non trovata o errore nel processo");
         }
-        
-        
+
+
     }
-    
+
     @DeleteMapping("/{valore}/{nome}")
     public ResponseEntity<?> deletePresenza(
         

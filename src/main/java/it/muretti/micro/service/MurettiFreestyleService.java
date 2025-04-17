@@ -98,21 +98,21 @@ public class MurettiFreestyleService {
 		            newPresenza.setData(requestPresenza.getData());
 		            newPresenza.setEvento(requestPresenza.getEvento());
 
-		            // Calcola il punteggio per questa presenza
-		            double punteggio = rankPointTable.calcolaRank(
-		                requestPresenza.getEvento(),
-		                requestPresenza.getMoltiplicatore(),
-		                requestPresenza.getPosizionamento()
-		            );
 
-		            newPresenza.setPunteggio(punteggio);
+						// Calcola il punteggio per questa presenza
+						double punteggio = rankPointTable.calcolaRank(
+								requestPresenza.getEvento(),
+								requestPresenza.getMoltiplicatore(),
+								requestPresenza.getPosizionamento()
+						);
+
+						newPresenza.setPunteggio(punteggio);
 
 		            // Aggiungi la nuova presenza alla lista del rapper
 		            rapper.getPresenze().add(newPresenza);
 
 		            // 🔥 Aggiorna il rank del rapper sommando il punteggio
 		            rapper.setRank(rapper.getRank() + punteggio);
-
 		            // Salva l'entità aggiornata nel DB
 		            murettifreestyleRepository.save(muretto);
 
@@ -123,16 +123,16 @@ public class MurettiFreestyleService {
 		    return false; // Se il rapper o il muretto non vengono trovati
 		}
 
-	 
-	 
-	 
-	 
+
+
+
+
 	 public boolean updatePresenza(String tipo, String valore,String nome, Date data,Presenza nuovaPresenza, String evento, double punteggio) {
 		    // Verifica che la data venga settata correttamente
 		    System.out.println("🔍 Nuova data da aggiornare: " + nuovaPresenza.getData());
 
 		    // Esegui l'aggiornamento nel repository
-		    
+
 
 		    return murettiRepository.updatePresenzaInArray(
 			        tipo,
@@ -144,8 +144,8 @@ public class MurettiFreestyleService {
 			        nuovaPresenza.getData()  // La nuova data da impostare
 			    );
 		}
-	 
-	 
+
+
 	 public boolean deletePresenza( String valore,String nome, Date data) {
 		   
 

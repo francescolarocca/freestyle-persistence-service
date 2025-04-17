@@ -1,0 +1,419 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /murettifreestyle/updateRapper/{tipo}/{valore}/{oldName}:
+    put:
+      tags: [write-controller]
+      operationId: updateRap
+      parameters:
+        - name: tipo
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: valore
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: oldName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: nome
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: rank
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+
+  /murettifreestyle/updatePresenza:
+    put:
+      tags: [write-controller]
+      operationId: updatePresenza
+      parameters:
+        - name: tipo
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: valore
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: nome
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: data
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Presenza'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+
+  /murettifreestyle/upload-avatar/{tipo}/{valore}/{nome}/{alias}:
+    post:
+      tags: [avatar-controller]
+      operationId: uploadAvatar
+      parameters:
+        - name: tipo
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: valore
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: nome
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: alias
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [avatar]
+              properties:
+                avatar:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+
+  /murettifreestyle/add:
+    post:
+      tags: [write-controller]
+      operationId: addUtente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MurettiFreestyleEntity'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MurettiFreestyleEntity'
+
+  /murettifreestyle/addRapper:
+    post:
+      tags: [write-controller]
+      operationId: addRapper
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddRapperRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+
+  /murettifreestyle/addPresenza/{tipo}/{valore}/{rapperNome}:
+    post:
+      tags: [write-controller]
+      operationId: addPresenza
+      parameters:
+        - name: tipo
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: valore
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: rapperNome
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestPresenza'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+
+  /murettifreestyle:
+    get:
+      tags: [read-controller]
+      operationId: getAllUsers
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MurettiFreestyleEntity'
+
+  /murettifreestyle/rapperByTipoValore:
+    get:
+      tags: [read-controller]
+      operationId: getRappersByTipoAndValore
+      parameters:
+        - name: tipo
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: valore
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+
+  /murettifreestyle/rapperByName:
+    get:
+      tags: [read-controller]
+      operationId: getRapper
+      parameters:
+        - name: tipo
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: valore
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: nome
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+
+  /murettifreestyle/filtrati:
+    get:
+      tags: [read-controller]
+      operationId: getMurettiFiltrati
+      parameters:
+        - name: tipo
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MurettiFreestyleEntity'
+
+  /murettifreestyle/{valore}/{nome}:
+    delete:
+      tags: [write-controller]
+      operationId: deletePresenza
+      parameters:
+        - name: valore
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: nome
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: data
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+
+  /murettifreestyle/deleteRapper/{valore}/{alias}:
+    delete:
+      tags: [write-controller]
+      operationId: deleteRapper
+      parameters:
+        - name: valore
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: alias
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: nome
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+
+components:
+  schemas:
+    Presenza:
+      type: object
+      properties:
+        data:
+          type: string
+          format: date-time
+        evento:
+          type: string
+        punteggio:
+          type: number
+          format: double
+
+    MurettiFreestyleEntity:
+      type: object
+      properties:
+        id:
+          type: string
+        tipo:
+          type: string
+        valore:
+          type: string
+        muretto:
+          type: string
+        alias:
+          type: string
+        ranking:
+          type: string
+        rapper:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rapper'
+
+    Rapper:
+      type: object
+      properties:
+        nome:
+          type: string
+        rank:
+          type: number
+          format: double
+        presenze:
+          type: array
+          items:
+            $ref: '#/components/schemas/Presenza'
+        bio:
+          type: string
+        avatarUrl:
+          type: string
+        spotifyLink:
+          type: string
+        soundcloudLink:
+          type: string
+        instagramLink:
+          type: string
+
+    AddRapperRequest:
+      type: object
+      properties:
+        valore:
+          type: string
+        alias:
+          type: string
+        rapper:
+          $ref: '#/components/schemas/Rapper'
+
+    RequestPresenza:
+      type: object
+      properties:
+        data:
+          type: string
+          format: date-time
+        evento:
+          type: string
+        moltiplicatore:
+          type: string
+        posizionamento:
+          type: string

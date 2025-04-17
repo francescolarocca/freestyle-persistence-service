@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import it.muretti.micro.conf.RankPointTable;
 
 @SpringBootApplication
-//@ComponentScan(basePackages = "it.muretti.micro.conf") // Se necessario, specifica il pacchetto corretto
+//@ComponentScan(basePackages = "it.muretti.micro") // Se necessario, specifica il pacchetto corretto
 @EnableConfigurationProperties(RankPointTable.class)
 public class MicroApplication {
 

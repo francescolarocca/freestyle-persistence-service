@@ -17,7 +17,7 @@ spring:
     name: micro
   data:
     mongodb:
-      uri: mongodb://admin:pippo@mongodb:27017/MurettiFreestyle?authSource=admin
+      uri: mongodb://localhost:27017/MurettiFreestyle?authSource=admin
   resources:
    static-locations: classpath:/static/, file:/uploads/
 debug: 'false'
@@ -29,17 +29,16 @@ logging:
           mongodb:
             core:
               MongoTemplate: ERROR
-
 rankpointable:
   presenza: 2
   battle:
     ottavi: 2
     quarti: 4
     semifinale: 8
-    finale : 12
+    finale: 12
   moltiplicatore:
     casa: 1.0
-    regionale: 1.5		
+    regionale: 1.5
 
 
 
