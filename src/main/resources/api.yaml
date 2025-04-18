@@ -395,16 +395,6 @@ components:
         instagramLink:
           type: string
 
-    AddRapperRequest:
-      type: object
-      properties:
-        valore:
-          type: string
-        alias:
-          type: string
-        rapper:
-          $ref: '#/components/schemas/Rapper'
-
     RequestPresenza:
       type: object
       properties:
@@ -417,3 +407,15 @@ components:
           type: string
         posizionamento:
           type: string
+
+    AddRapperRequest:
+      type: object
+      properties:
+        valore:
+          type: string
+        alias:
+          type: string
+        rapper:
+          $ref: '#/components/schemas/Rapper'
+
+
