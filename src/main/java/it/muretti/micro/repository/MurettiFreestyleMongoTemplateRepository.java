@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Projections;
+import it.muretti.micro.entity.Presenza;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,37 +63,8 @@ public class MurettiFreestyleMongoTemplateRepository {
 		
 		return result.getModifiedCount() == 1;
 	}
-	
-	public boolean deletePresenzaInArray(
-		      
-		     String valore, 
-		     String nome,
-		     Date data
-		 ){
-		
-		Bson filter = Filters.and(
-		        Filters.eq("tipo", "Muretto"),
-		        Filters.eq("valore", valore),
-		        Filters.elemMatch("rapper", Filters.and( // Trova il rapper con il nome
-                        Filters.eq("nome", nome),
-                        Filters.elemMatch("presenze", Filters.eq("data", data))
-                ))
-		       
-		    );
-		
-		Bson update = Updates.pull("rapper.$.presenze",new Document("data",data));
-		
-		
-		
-		UpdateResult result = mongoTemplate.getCollection("murettifreestyle").updateOne(filter, update);
-		
-		
-						
-		
-		
-		
-		return result.getModifiedCount() == 1;
-	}
+
+
 	
 	
 	public boolean addRapperToMuretto(String valore, String alias, Rapper rapper) {
@@ -137,45 +111,7 @@ public class MurettiFreestyleMongoTemplateRepository {
 	    return result.getModifiedCount() == 1;
 	}
 	
-	public boolean updateRapperInArray(
-		     String tipo, 
-		     String valore, 
-		     String nome,
-		     String newName,
-		     int newRank
-		     
-		 ){
-		
-		Bson filter = Filters.and(
-		        Filters.eq("tipo", tipo),
-		        Filters.eq("valore", valore)
-		       
-		    );
-		
-		String nameClean = newName.trim();
-		
-		Bson update = Updates.combine(
-				Updates.set("rapper.$[elem].nome",nameClean),
-				Updates.set("rapper.$[elem].rank",newRank));
-			
-		
-		UpdateOptions options = new UpdateOptions()
-		        .arrayFilters(List.of(
-		        Filters.and(
-		            Filters.eq("elem.nome", nome)
-		            
-		        ))
-		        		);
-		
-		UpdateResult result = mongoTemplate.getCollection("murettifreestyle").updateMany(filter, update, options);
-		
-		
-						
-		
-		
-		
-		return result.getModifiedCount() == 1;
-	}
+
 	
 	
 	

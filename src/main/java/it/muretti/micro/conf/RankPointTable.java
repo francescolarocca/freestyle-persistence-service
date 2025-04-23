@@ -10,11 +10,12 @@ import java.util.Map;
 
 @Configuration
 @ConfigurationProperties(prefix = "rankpointable")
-@Getter
-@Setter
 public class RankPointTable {
 
     private int presenza;
+
+
+
     private Map<String,Integer> battle;
     private Map<String,Double> moltiplicatore;
 
@@ -28,5 +29,27 @@ public class RankPointTable {
         }
         return 0 ;
     }
+    public int getPresenza() {
+        return presenza;
+    }
 
+    public void setPresenza(int presenza) {
+        this.presenza = presenza;
+    }
+
+    public Map<String, Integer> getBattle() {
+        return battle;
+    }
+
+    public void setBattle(Map<String, Integer> battle) {
+        this.battle = battle;
+    }
+
+    public Map<String, Double> getMoltiplicatore() {
+        return moltiplicatore;
+    }
+
+    public void setMoltiplicatore(Map<String, Double> moltiplicatore) {
+        this.moltiplicatore = moltiplicatore;
+    }
 }
