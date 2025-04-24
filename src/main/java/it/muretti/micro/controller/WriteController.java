@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
 
+import it.muretti.micro.request.RequestAppello;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -174,6 +175,14 @@ public class WriteController {
         murettifreestyleService.updateRapper(tipo, valore, oldName,  nome , rank);
         return ResponseEntity.ok("Rapper aggiornato correttamente");
         
+    }
+
+    @PostMapping("/appello")
+    public ResponseEntity<?> doAppello(
+            @RequestBody RequestAppello requestAppello
+    ) {
+        murettifreestyleService.doAppello(requestAppello);
+        return ResponseEntity.ok("Rapper aggiornato correttamente");
     }
 
 

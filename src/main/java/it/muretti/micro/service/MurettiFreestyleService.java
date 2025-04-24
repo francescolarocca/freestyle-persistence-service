@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import it.muretti.micro.exception.InternalServerErrorException;
+import it.muretti.micro.request.RequestAppello;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -162,7 +163,7 @@ public class MurettiFreestyleService {
 		   
 
 		    // Esegui l'aggiornamento nel repository
-		 MurettiFreestyleEntity muretto =murettifreestyleRepository.findByTipoAndValore("Muretto", valore).orElseThrow(() -> new InternalServerErrorException("Rapper non trovato"));;
+		 MurettiFreestyleEntity muretto =murettifreestyleRepository.findByTipoAndValore("Muretto", valore).orElseThrow(() -> new InternalServerErrorException("Rapper non trovato"));
 		 Rapper rapper  = muretto.getRapper().stream().filter(r -> r.getNome().equalsIgnoreCase(nome)).findFirst().orElseThrow(() -> new InternalServerErrorException("Rapper non trovato"));
 
 		    return murettiFreestyleMongoTemplateRepository.deleteRapperInMuretto(
@@ -196,5 +197,23 @@ public class MurettiFreestyleService {
 	        }
 	        throw new IllegalArgumentException("Muretto con tipo: " + tipo + ", valore: " + valore + " e alias: " + alias + " non trovato");
 	    }
-	 
+
+		public void doAppello (RequestAppello request) {
+
+			MurettiFreestyleEntity muretto = murettifreestyleRepository.findByTipoAndValore(request.getTipo(), request.getValore()).orElseThrow(() -> new InternalServerErrorException("Rapper non trovato"));
+
+			for (String nome: request.getRapper()) {
+				muretto.getRapper().stream().filter(r -> r.getNome().equalsIgnoreCase(nome)).findFirst().ifPresent(rapperFound -> {
+					Presenza presenza = new Presenza();
+					presenza.setData(new Date());
+					presenza.setEvento("presenza");
+					presenza.setPunteggio(rankPointTable.calcolaRank("presenza","casa",null));
+					rapperFound.addPresenza(presenza);// Imposta il punteggio iniziale a 0
+					rapperFound.setRank(rapperFound.getRank() + presenza.getPunteggio());
+				});
+				murettifreestyleRepository.save(muretto);
+			}
+		}
 	 }
+
+

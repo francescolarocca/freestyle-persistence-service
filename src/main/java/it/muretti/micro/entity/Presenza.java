@@ -47,6 +47,9 @@ public class Presenza implements Serializable {
 	public String toString() {
 		return "Presenza [data=" + data + ", evento=" + evento + ", punteggio=" + punteggio + "]";
 	}
+
+
+
 	
     
     

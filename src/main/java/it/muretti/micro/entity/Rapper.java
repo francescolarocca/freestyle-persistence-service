@@ -71,7 +71,14 @@ public class Rapper implements Serializable {
 	public void setPresenze(List<Presenza> presenze) {
 		this.presenze = presenze;
 	}
-	
+	public void addPresenza(Presenza presenza) {
+		if(presenze != null) {
+			this.presenze.add(presenza);
+		}
+		else {
+			this.presenze = List.of(presenza);
+		}
+	}
     
     
 }
