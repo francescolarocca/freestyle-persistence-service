@@ -21,28 +21,10 @@ public class Presenza implements Serializable {
     private Date data;
     private String evento;
     private double punteggio;
+	private String descrizione;
     
     
-    
-	
-	public Date getData() {
-		return data;
-	}
-	public void setData(Date dataPresenza) {
-		this.data = dataPresenza;
-	}
-	public String getEvento() {
-		return evento;
-	}
-	public void setEvento(String evento) {
-		this.evento = evento;
-	}
-	public double getPunteggio() {
-		return punteggio;
-	}
-	public void setPunteggio(double punteggio) {
-		this.punteggio = punteggio;
-	}
+
 	@Override
 	public String toString() {
 		return "Presenza [data=" + data + ", evento=" + evento + ", punteggio=" + punteggio + "]";

@@ -22,38 +22,8 @@ public class RequestPresenza implements Serializable {
     private String evento;
     private String moltiplicatore;
     private String posizionamento;
-    
-    
-    
-    public String getPosizionamento() {
-    	return posizionamento;
-    }
-    
-    public void setPosizionamento(String posizionamento) {
-    	this.posizionamento = posizionamento;
-    	}
-    
-    
-    public String getMoltiplicatore() {
-    	return moltiplicatore;
-    }
-    
-    public void setMoltiplicatore(String moltiplicatore) {
-    	this.moltiplicatore = moltiplicatore;
-    }
-    
-	public Date getData() {
-		return data;
-	}
-	public void setData(Date dataPresenza) {
-		this.data = dataPresenza;
-	}
-	public String getEvento() {
-		return evento;
-	}
-	public void setEvento(String evento) {
-		this.evento = evento;
-	}
+	private String descrizione;
+
 
 	@Override
 	public String toString() {

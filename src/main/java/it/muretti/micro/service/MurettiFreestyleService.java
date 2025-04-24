@@ -95,7 +95,7 @@ public class MurettiFreestyleService {
 		            Presenza newPresenza = new Presenza();
 		            newPresenza.setData(requestPresenza.getData());
 		            newPresenza.setEvento(requestPresenza.getEvento());
-
+					newPresenza.setDescrizione(requestPresenza.getDescrizione());
 		            // Calcola il punteggio per questa presenza
 		            double punteggio = rankPointTable.calcolaRank(
 		                requestPresenza.getEvento(),
