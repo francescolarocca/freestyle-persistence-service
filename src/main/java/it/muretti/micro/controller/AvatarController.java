@@ -31,45 +31,70 @@ public class AvatarController {
     
 
     @PostMapping("/upload-avatar/{tipo}/{valore}/{nome}/{alias}")
-    public ResponseEntity<?> uploadAvatar(@RequestParam("avatar") MultipartFile file,@PathVariable String tipo,@PathVariable String valore, @PathVariable String nome,@PathVariable String alias) {
+    public ResponseEntity<?> uploadAvatar(@RequestParam("avatar") MultipartFile file,
+                                          @PathVariable String tipo,
+                                          @PathVariable String valore,
+                                          @PathVariable String nome,
+                                          @PathVariable String alias) {
 
+        System.out.println("▶ Inizio upload avatar per " + nome);
+        
         if (file.isEmpty()) {
+            System.out.println("❌ Errore: Nessun file ricevuto.");
             return ResponseEntity.badRequest().body("File non selezionato");
         }
 
         String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
+        System.out.println("📂 Nome file ricevuto: " + originalFileName);
 
         try {
             // Crea la cartella 'uploads' se non esiste
             Path uploadPath = Paths.get("C:/Users/39347/Desktop/upload");
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
+                System.out.println("📂 Creata cartella upload.");
             }
 
-            // Salva il file nella cartella 'uploads'
+            // Salva il file
             Path filePath = uploadPath.resolve(originalFileName);
             file.transferTo(filePath.toFile());
+            System.out.println("✅ File salvato in: " + filePath.toString());
 
-            // Genera l'URL dell'immagine
-            String avatarUrl = "http://localhost:8080/uploads/" + originalFileName; // Assicurati che il server serva correttamente il file
+            // Genera URL accessibile per il frontend
+            String avatarUrl = "http://localhost:8080/uploads/" + originalFileName;
+            System.out.println("🌍 URL avatar: " + avatarUrl);
 
-            // Recupera l'utente dal database e aggiorna l'URL dell'immagine
+            // Recupera il muretto dal database
             MurettiFreestyleEntity murettiFreestyleEntity = murettifreestyleService.findMuretto(tipo, valore, alias);
+            if (murettiFreestyleEntity == null) {
+                System.out.println("❌ Errore: Muretto non trovato.");
+                return ResponseEntity.status(404).body("Muretto non trovato");
+            }
 
-         // Cerca il rapper specifico nella lista e aggiorna solo quello
-            murettiFreestyleEntity.getRapper().stream()
-             .filter(rapper -> rapper.getNome().equalsIgnoreCase(nome))
-             .findFirst()
-             .ifPresent(rapper -> rapper.setAvatarUrl(avatarUrl));
+            // Cerca il rapper specifico nella lista e aggiorna solo quello
+            boolean rapperUpdated = murettiFreestyleEntity.getRapper().stream()
+                .filter(rapper -> rapper.getNome().equalsIgnoreCase(nome))
+                .findFirst()
+                .map(rapper -> {
+                    rapper.setAvatarUrl(avatarUrl);
+                    return true;
+                }).orElse(false);
 
-         // Salva l'entità aggiornata
+            if (!rapperUpdated) {
+                System.out.println("❌ Errore: Rapper non trovato.");
+                return ResponseEntity.status(404).body("Rapper non trovato nel database");
+            }
+
+            // Salva le modifiche nel database
             murettiFreeStyleRepository.save(murettiFreestyleEntity);
+            System.out.println("💾 Dati aggiornati nel database.");
 
-            return ResponseEntity.ok().body("{\"avatarUrl\": \"" + avatarUrl + "\"}"); // Risponde con l'URL dell'immagine
+            return ResponseEntity.ok().body("{\"avatarUrl\": \"" + avatarUrl + "\"}");
         } catch (IOException e) {
+            System.out.println("❌ Errore durante il caricamento dell'immagine:");
             e.printStackTrace();
             return ResponseEntity.status(500).body("Errore nel caricamento dell'immagine");
         }
-    
     }
+
     }
