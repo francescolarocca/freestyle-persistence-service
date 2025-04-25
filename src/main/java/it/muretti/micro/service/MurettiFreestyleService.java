@@ -146,7 +146,7 @@ public class MurettiFreestyleService {
 	 
 	 public void deletePresenza( String valore,String nome, Date data) {
 
-		 	MurettiFreestyleEntity muretto =murettifreestyleRepository.findByTipoAndValore("Muretto", valore).orElseThrow(() -> new InternalServerErrorException("Rapper non trovato"));;
+		 	MurettiFreestyleEntity muretto =murettifreestyleRepository.findByTipoAndValore("Muretto", valore).orElseThrow(() -> new InternalServerErrorException("Rapper non trovato"));
 			Rapper rapper  = muretto.getRapper().stream().filter(r -> r.getNome().equalsIgnoreCase(nome)).findFirst().orElseThrow(() -> new InternalServerErrorException("Rapper non trovato"));
 			Presenza presenza = rapper.getPresenze().stream().filter(p -> p.getData().equals(data)).findFirst().orElseThrow(() -> new InternalServerErrorException("Presenza non trovata"));
 		   	double rank = presenza.getPunteggio();
@@ -164,7 +164,6 @@ public class MurettiFreestyleService {
 
 		    // Esegui l'aggiornamento nel repository
 		 MurettiFreestyleEntity muretto =murettifreestyleRepository.findByTipoAndValore("Muretto", valore).orElseThrow(() -> new InternalServerErrorException("Rapper non trovato"));
-		 Rapper rapper  = muretto.getRapper().stream().filter(r -> r.getNome().equalsIgnoreCase(nome)).findFirst().orElseThrow(() -> new InternalServerErrorException("Rapper non trovato"));
 
 		    return murettiFreestyleMongoTemplateRepository.deleteRapperInMuretto(
 			        
@@ -178,7 +177,7 @@ public class MurettiFreestyleService {
 	 public void updateRapper(String tipo, String valore,String nome, String newName, int newRank) {
 		    // Verifica che la data venga settata correttamente
 
-		 MurettiFreestyleEntity muretto =murettifreestyleRepository.findByTipoAndValore(tipo, valore).orElseThrow(() -> new InternalServerErrorException("Rapper non trovato"));;
+		 MurettiFreestyleEntity muretto =murettifreestyleRepository.findByTipoAndValore(tipo, valore).orElseThrow(() -> new InternalServerErrorException("Rapper non trovato"));
 		 Rapper rapper  = muretto.getRapper().stream().filter(r -> r.getNome().equalsIgnoreCase(nome)).findFirst().orElseThrow(() -> new InternalServerErrorException("Rapper non trovato"));
 		    // Esegui l'aggiornamento nel repository
 		 rapper.setRank(newRank);
