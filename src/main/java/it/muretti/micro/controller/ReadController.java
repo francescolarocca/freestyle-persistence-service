@@ -16,7 +16,7 @@ import it.muretti.micro.entity.MurettiFreestyleEntity;
 import it.muretti.micro.entity.Rapper;
 import it.muretti.micro.service.MurettiFreestyleService;
 
-@CrossOrigin(origins = "http://localhost:3000") // Permette a tutto il controller di accettare richieste da React
+@CrossOrigin(origins = "*") // Permette a tutto il controller di accettare richieste da React
 
 @Controller
 @RequestMapping("/murettifreestyle")
