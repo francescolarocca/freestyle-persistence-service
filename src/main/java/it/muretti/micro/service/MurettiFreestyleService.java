@@ -204,7 +204,7 @@ public class MurettiFreestyleService {
 			for (String nome: request.getRapper()) {
 				muretto.getRapper().stream().filter(r -> r.getNome().equalsIgnoreCase(nome)).findFirst().ifPresent(rapperFound -> {
 					Presenza presenza = new Presenza();
-					presenza.setData(new Date());
+					presenza.setData(request.getData());
 					presenza.setEvento("presenza");
 					presenza.setPunteggio(rankPointTable.calcolaRank("presenza","casa",null));
 					rapperFound.addPresenza(presenza);// Imposta il punteggio iniziale a 0
