@@ -39,7 +39,10 @@ rankpointable:
     finale : 12
   moltiplicatore:
     casa: 1.0
-    regionale: 1.5		
+    regionale: 1.5
+    sud: 2
+    centro: 3
+    nord: 4
 
 
 

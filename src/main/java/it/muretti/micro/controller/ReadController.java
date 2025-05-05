@@ -45,6 +45,9 @@ public class ReadController {
 
 	    
 	    List<MurettiFreestyleEntity> result = murettifreestyleService.filtrati(tipo);
+		for(MurettiFreestyleEntity muretto : result) {
+			muretto.getRapper().sort((r1, r2) -> Double.compare(r2.getRank(), r1.getRank()));
+		}
 	    return ResponseEntity.ok(result);
 	}
 	

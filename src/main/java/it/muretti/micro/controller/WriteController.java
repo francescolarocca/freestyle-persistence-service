@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
 
+import it.muretti.micro.request.RequestAppello;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -124,12 +125,8 @@ public class WriteController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Formato data non valido: " + data);
         }
 
-    	  boolean deleted = murettifreestyleService.deletePresenza(valore, nome, dataConvertita);
-          if (deleted) {
-              return ResponseEntity.ok("Data eliminata con successo!");
-          } else {
-              return ResponseEntity.notFound().build();
-          }    
+    	   murettifreestyleService.deletePresenza(valore, nome, dataConvertita);
+        return ResponseEntity.ok("Data eliminata con successo!");
     }
     
     @PostMapping("/addRapper")
@@ -164,28 +161,28 @@ public class WriteController {
     }
     
     @PutMapping("/updateRapper/{tipo}/{valore}/{oldName}")
-    public ResponseEntity<?> updateRap(
+    public ResponseEntity<?> updateRapper(
     	@PathVariable String tipo,
     	@PathVariable String valore,
         @PathVariable String oldName,
-        @RequestParam String nome,
+        @RequestParam(required = false) String nome,
         @RequestParam int rank
           
         ) {
 
        
         // Passaggio dei dati aggiornati
-        boolean updated = murettifreestyleService.updateRapper(tipo, valore, oldName,  nome , rank);
-        if (updated) {
-        	
-            return ResponseEntity.ok("Rapper aggiornato correttamente");
-           
-            
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Presenza non trovata o errore nel processo");
-        }
+        murettifreestyleService.updateRapper(tipo, valore, oldName,  nome , rank);
+        return ResponseEntity.ok("Rapper aggiornato correttamente");
         
-        
+    }
+
+    @PostMapping("/appello")
+    public ResponseEntity<?> doAppello(
+            @RequestBody RequestAppello requestAppello
+    ) {
+        murettifreestyleService.doAppello(requestAppello);
+        return ResponseEntity.ok("Rapper aggiornato correttamente");
     }
 
 
